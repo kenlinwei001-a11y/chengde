@@ -8,8 +8,16 @@ const projects = [
   { id: 'TH-003', name: '太和矿业尾矿库', owner: '太和集团', level: '二等', status: '闭库', stage: '验收阶段', safetyIndex: 95, progress: 100, alerts: { red: 0, orange: 0, yellow: 0 } },
 ];
 
-export default function ProjectList() {
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+interface ProjectListProps {
+  selectedProject?: string | null;
+  onSelectProject?: (id: string | null) => void;
+}
+
+export default function ProjectList({ selectedProject: externalSelectedProject, onSelectProject: externalOnSelectProject }: ProjectListProps = {}) {
+  const [internalSelectedProject, setInternalSelectedProject] = useState<string | null>(null);
+
+  const selectedProject = externalSelectedProject !== undefined ? externalSelectedProject : internalSelectedProject;
+  const setSelectedProject = externalOnSelectProject || setInternalSelectedProject;
 
   if (selectedProject) {
     return <ProjectDetail projectId={selectedProject} onBack={() => setSelectedProject(null)} />;

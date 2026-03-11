@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, FileText, Activity, AlertTriangle, Clock, Upload, Download, X, CheckCircle2, DollarSign, TrendingUp, TrendingDown, PieChart, ShieldAlert, Share2, Droplets, Wind, Map, Video, Radio, Database, Layers, Box, AlertCircle } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, ReferenceLine } from 'recharts';
 
 const mockChartData = Array.from({ length: 10 }).map((_, i) => ({
   time: `03-${i + 1}`,
@@ -16,6 +16,167 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
 
   const renderSubPage = () => {
     switch (activeSubPage) {
+      case 'diffusion-details':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-white">渗滤液污染扩散数据详情</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 overflow-auto custom-scrollbar">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                 <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                   <h3 className="text-sm font-medium text-slate-300 mb-4">特征污染物浓度随距离衰减预测 (5年后)</h3>
+                   <div className="h-64">
+                     <ResponsiveContainer width="100%" height="100%">
+                       <LineChart data={[
+                         { distance: '0m', concentration: 0.8, limit: 0.2 },
+                         { distance: '100m', concentration: 0.5, limit: 0.2 },
+                         { distance: '300m', concentration: 0.25, limit: 0.2 },
+                         { distance: '500m', concentration: 0.18, limit: 0.2 },
+                         { distance: '800m', concentration: 0.05, limit: 0.2 },
+                         { distance: '1000m', concentration: 0.01, limit: 0.2 },
+                       ]} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                         <XAxis dataKey="distance" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155' }} itemStyle={{ color: '#e2e8f0' }} />
+                         <Line type="monotone" dataKey="concentration" name="预测浓度 (mg/L)" stroke="#ef4444" strokeWidth={2} />
+                         <Line type="step" dataKey="limit" name="标准限值" stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 5" />
+                       </LineChart>
+                     </ResponsiveContainer>
+                   </div>
+                 </div>
+                 <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                   <h3 className="text-sm font-medium text-slate-300 mb-4">扩散面积演化趋势 (公顷)</h3>
+                   <div className="h-64">
+                     <ResponsiveContainer width="100%" height="100%">
+                       <BarChart data={[
+                         { year: '第1年', area: 1.2 },
+                         { year: '第2年', area: 2.5 },
+                         { year: '第3年', area: 3.8 },
+                         { year: '第4年', area: 4.6 },
+                         { year: '第5年', area: 5.1 },
+                       ]} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                         <XAxis dataKey="year" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155' }} cursor={{ fill: '#334155', opacity: 0.4 }} />
+                         <Bar dataKey="area" name="影响面积 (ha)" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                       </BarChart>
+                     </ResponsiveContainer>
+                   </div>
+                 </div>
+              </div>
+              <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-slate-300 mb-4">风险评估结论</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  根据 MODFLOW 和 MT3DMS 耦合模型测算，在无额外防渗干预的情况下，尾矿库特征污染物（以氰化物为例）将在第 5 年扩散至东南方向约 500 米处，局部浓度可能接近地下水 III 类标准限值（0.2 mg/L）。建议在 300 米处增设截渗墙或抽水井，以阻断污染羽流的进一步扩散。
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'soil-risk-details':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-white">周边土壤重金属风险数据</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 overflow-auto custom-scrollbar">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                   <h3 className="text-sm font-medium text-slate-300 mb-4">核心区土壤重金属含量对比 (mg/kg)</h3>
+                   <div className="h-64">
+                     <ResponsiveContainer width="100%" height="100%">
+                       <BarChart data={[
+                         { element: '镉 (Cd)', value: 0.45, limit: 0.6 },
+                         { element: '铅 (Pb)', value: 85, limit: 170 },
+                         { element: '砷 (As)', value: 22, limit: 25 },
+                         { element: '汞 (Hg)', value: 0.8, limit: 3.4 },
+                         { element: '铬 (Cr)', value: 120, limit: 250 },
+                       ]} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                         <XAxis dataKey="element" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155' }} cursor={{ fill: '#334155', opacity: 0.4 }} />
+                         <Bar dataKey="value" name="实测均值" fill="#10b981" radius={[4, 4, 0, 0]} />
+                         <Bar dataKey="limit" name="风险筛选值" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                       </BarChart>
+                     </ResponsiveContainer>
+                   </div>
+                </div>
+                <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                   <h3 className="text-sm font-medium text-slate-300 mb-4">地表水/地下水综合污染指数 (Nemerow Index)</h3>
+                   <div className="h-64">
+                     <ResponsiveContainer width="100%" height="100%">
+                       <LineChart data={[
+                         { month: '25年10月', index: 1.2 },
+                         { month: '25年11月', index: 1.3 },
+                         { month: '25年12月', index: 1.1 },
+                         { month: '26年01月', index: 1.4 },
+                         { month: '26年02月', index: 1.5 },
+                         { month: '26年03月', index: 1.2 },
+                       ]} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                         <XAxis dataKey="month" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                         <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} domain={[0, 3]} />
+                         <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155' }} itemStyle={{ color: '#e2e8f0' }} />
+                         <ReferenceLine y={1.0} stroke="#10b981" strokeDasharray="3 3" label={{ position: 'insideTopLeft', value: '警戒线 (轻度污染)', fill: '#10b981', fontSize: 12 }} />
+                         <ReferenceLine y={2.0} stroke="#ef4444" strokeDasharray="3 3" label={{ position: 'insideTopLeft', value: '重度污染线', fill: '#ef4444', fontSize: 12 }} />
+                         <Line type="monotone" dataKey="index" name="内梅罗指数" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                       </LineChart>
+                     </ResponsiveContainer>
+                   </div>
+                </div>
+              </div>
+              <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-slate-300 mb-4">采样点分布与超标情况</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-800/50 border-b border-slate-700 text-sm text-slate-400">
+                        <th className="p-3 font-medium">采样点位</th>
+                        <th className="p-3 font-medium">位置描述</th>
+                        <th className="p-3 font-medium">超标因子</th>
+                        <th className="p-3 font-medium">超标倍数</th>
+                        <th className="p-3 font-medium">风险等级</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-700/50">
+                      <tr className="text-sm text-slate-300">
+                        <td className="p-3 font-mono">S-01</td>
+                        <td className="p-3">尾矿库主坝下游 100m 农田</td>
+                        <td className="p-3 text-slate-500">无</td>
+                        <td className="p-3 text-slate-500">-</td>
+                        <td className="p-3"><span className="text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded text-xs">安全</span></td>
+                      </tr>
+                      <tr className="text-sm text-slate-300">
+                        <td className="p-3 font-mono">S-02</td>
+                        <td className="p-3">排洪沟沿线 50m</td>
+                        <td className="p-3 text-orange-400">砷 (As)</td>
+                        <td className="p-3 text-orange-400">1.2倍</td>
+                        <td className="p-3"><span className="text-orange-400 bg-orange-500/10 px-2 py-1 rounded text-xs">轻微风险</span></td>
+                      </tr>
+                      <tr className="text-sm text-slate-300">
+                        <td className="p-3 font-mono">S-03</td>
+                        <td className="p-3">尾矿库东侧自然沟谷</td>
+                        <td className="p-3 text-slate-500">无</td>
+                        <td className="p-3 text-slate-500">-</td>
+                        <td className="p-3"><span className="text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded text-xs">安全</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
       case 'diffusion-model':
         return (
           <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
@@ -500,13 +661,19 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
                 <div className="space-y-4">
                   <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-700">
                     <div className="text-sm text-slate-200 mb-1">污染扩散模拟 (渗滤液)</div>
-                    <div className="text-xs text-slate-400">基于地下水流向，模拟未来5年渗滤液扩散范围。当前主要影响东南方向 500m 区域。</div>
-                    <button onClick={() => setActiveSubPage('diffusion-model')} className="mt-2 text-xs text-blue-400 border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors">查看 3D 扩散模型</button>
+                    <div className="text-xs text-slate-400 mb-2">基于地下水流向，模拟未来5年渗滤液扩散范围。当前主要影响东南方向 500m 区域。</div>
+                    <div className="flex gap-2">
+                      <button onClick={() => setActiveSubPage('diffusion-model')} className="text-xs text-blue-400 border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors">查看 3D 扩散模型</button>
+                      <button onClick={() => setActiveSubPage('diffusion-details')} className="text-xs text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded hover:bg-emerald-500/10 transition-colors">详情</button>
+                    </div>
                   </div>
                   <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-700">
                     <div className="text-sm text-slate-200 mb-1">土壤/地下水风险评估</div>
-                    <div className="text-xs text-slate-400">2026年度汛前全面排查评估报告已生成。周边农田土壤重金属风险可控。</div>
-                    <button onClick={() => setPreviewDoc({title: '2026年度土壤及地下水风险评估报告.pdf', type: 'pdf'})} className="mt-2 text-xs text-blue-400 border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors">下载评估报告</button>
+                    <div className="text-xs text-slate-400 mb-2">2026年度汛前全面排查评估报告已生成。周边农田土壤重金属风险可控。</div>
+                    <div className="flex gap-2">
+                      <button onClick={() => setPreviewDoc({title: '2026年度土壤及地下水风险评估报告.pdf', type: 'pdf'})} className="text-xs text-blue-400 border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors">下载评估报告</button>
+                      <button onClick={() => setActiveSubPage('soil-risk-details')} className="text-xs text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded hover:bg-emerald-500/10 transition-colors">详情</button>
+                    </div>
                   </div>
                 </div>
               </div>

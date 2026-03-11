@@ -14,16 +14,22 @@ import Environment from './pages/Environment';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+
+  const handleNavigateToProject = (projectId: string) => {
+    setSelectedProject(projectId);
+    setCurrentPage('projects');
+  };
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'dashboard': return <Dashboard />;
-      case 'projects': return <ProjectList />;
+      case 'dashboard': return <Dashboard onNavigateToProject={handleNavigateToProject} onNavigateToPage={setCurrentPage} />;
+      case 'projects': return <ProjectList selectedProject={selectedProject} onSelectProject={setSelectedProject} />;
       case 'alerts': return <Alerts />;
       case 'video': return <VideoSurveillance />;
       case 'environment': return <Environment />;
       case 'reports': return <Reports />;
-      default: return <Dashboard />;
+      default: return <Dashboard onNavigateToProject={handleNavigateToProject} onNavigateToPage={setCurrentPage} />;
     }
   };
 
@@ -40,12 +46,12 @@ export default function App() {
           </div>
           
           <nav className="flex gap-1">
-            <NavButton icon={<LayoutDashboard size={18} />} label="驾驶舱" active={currentPage === 'dashboard'} onClick={() => setCurrentPage('dashboard')} />
-            <NavButton icon={<FolderKanban size={18} />} label="项目管理" active={currentPage === 'projects'} onClick={() => setCurrentPage('projects')} />
-            <NavButton icon={<Bell size={18} />} label="监测预警" active={currentPage === 'alerts'} onClick={() => setCurrentPage('alerts')} />
-            <NavButton icon={<Video size={18} />} label="视频监控" active={currentPage === 'video'} onClick={() => setCurrentPage('video')} />
-            <NavButton icon={<Leaf size={18} />} label="生态环境" active={currentPage === 'environment'} onClick={() => setCurrentPage('environment')} />
-            <NavButton icon={<FileText size={18} />} label="统计报表" active={currentPage === 'reports'} onClick={() => setCurrentPage('reports')} />
+            <NavButton icon={<LayoutDashboard size={18} />} label="驾驶舱" active={currentPage === 'dashboard'} onClick={() => { setCurrentPage('dashboard'); setSelectedProject(null); }} />
+            <NavButton icon={<FolderKanban size={18} />} label="项目管理" active={currentPage === 'projects'} onClick={() => { setCurrentPage('projects'); setSelectedProject(null); }} />
+            <NavButton icon={<Bell size={18} />} label="监测预警" active={currentPage === 'alerts'} onClick={() => { setCurrentPage('alerts'); setSelectedProject(null); }} />
+            <NavButton icon={<Video size={18} />} label="视频监控" active={currentPage === 'video'} onClick={() => { setCurrentPage('video'); setSelectedProject(null); }} />
+            <NavButton icon={<Leaf size={18} />} label="生态环境" active={currentPage === 'environment'} onClick={() => { setCurrentPage('environment'); setSelectedProject(null); }} />
+            <NavButton icon={<FileText size={18} />} label="统计报表" active={currentPage === 'reports'} onClick={() => { setCurrentPage('reports'); setSelectedProject(null); }} />
           </nav>
         </div>
 
