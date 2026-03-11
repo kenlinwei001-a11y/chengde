@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, FileText, Activity, AlertTriangle, Clock, Upload, Download, X, CheckCircle2, DollarSign, TrendingUp, TrendingDown, PieChart } from 'lucide-react';
+import { ArrowLeft, FileText, Activity, AlertTriangle, Clock, Upload, Download, X, CheckCircle2, DollarSign, TrendingUp, TrendingDown, PieChart, ShieldAlert, Share2, Droplets, Wind, Map, Video, Radio, Database, Layers, Box, AlertCircle } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const mockChartData = Array.from({ length: 10 }).map((_, i) => ({
@@ -12,6 +12,320 @@ const mockChartData = Array.from({ length: 10 }).map((_, i) => ({
 export default function ProjectDetail({ projectId, onBack }: { projectId: string, onBack: () => void }) {
   const [activeTab, setActiveTab] = useState('progress');
   const [previewDoc, setPreviewDoc] = useState<any>(null);
+  const [activeSubPage, setActiveSubPage] = useState<string | null>(null);
+
+  const renderSubPage = () => {
+    switch (activeSubPage) {
+      case 'diffusion-model':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-white">3D 污染扩散模拟模型</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 relative overflow-hidden flex flex-col items-center justify-center">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1584972208173-0f1170f18d6e?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-luminosity"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
+              <div className="z-10 text-center">
+                <Map size={64} className="text-blue-400 mx-auto mb-4 opacity-80" />
+                <h3 className="text-2xl font-bold text-white mb-2">渗滤液扩散 3D 演化模型</h3>
+                <p className="text-slate-400 max-w-lg mx-auto mb-6">基于地下水动力学模型 (MODFLOW) 和溶质运移模型 (MT3DMS) 构建。当前展示未来 5 年内重金属污染物的扩散羽流演化过程。</p>
+                <div className="flex gap-4 justify-center">
+                  <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-white font-medium transition-colors flex items-center gap-2">
+                    <Video size={18} /> 播放演化动画
+                  </button>
+                  <button className="bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg text-white font-medium transition-colors flex items-center gap-2">
+                    <Download size={18} /> 导出分析报告
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'inspection-process':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-white">排查-整改-销号 电子化流程</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 overflow-auto">
+              <div className="max-w-4xl mx-auto space-y-8">
+                {/* 流程步骤 */}
+                <div className="flex justify-between items-center relative">
+                  <div className="absolute left-0 right-0 top-1/2 h-1 bg-slate-700 -z-10 -translate-y-1/2"></div>
+                  <div className="absolute left-0 w-2/3 top-1/2 h-1 bg-blue-500 -z-10 -translate-y-1/2"></div>
+                  
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold border-4 border-slate-900"><CheckCircle2 size={20}/></div>
+                    <span className="text-sm font-medium text-blue-400">发现隐患</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold border-4 border-slate-900"><CheckCircle2 size={20}/></div>
+                    <span className="text-sm font-medium text-blue-400">下达整改</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold border-4 border-slate-900 animate-pulse"><Clock size={20}/></div>
+                    <span className="text-sm font-medium text-blue-400">执行整改</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-400 font-bold border-4 border-slate-900">4</div>
+                    <span className="text-sm font-medium text-slate-500">复查验收</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-400 font-bold border-4 border-slate-900">5</div>
+                    <span className="text-sm font-medium text-slate-500">归档销号</span>
+                  </div>
+                </div>
+
+                {/* 当前任务单 */}
+                <div className="bg-slate-900 rounded-lg p-6 border border-slate-700">
+                  <h3 className="text-lg font-medium text-white mb-4 border-b border-slate-800 pb-4">当前任务: 排洪设施畅通性整改</h3>
+                  <div className="grid grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <div className="text-sm text-slate-500 mb-1">隐患描述</div>
+                      <div className="text-slate-300">排洪井入口有大量树枝和泥沙堆积，影响过水断面。</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500 mb-1">整改要求</div>
+                      <div className="text-slate-300">立即组织人工或机械清理，恢复设计排洪能力。</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500 mb-1">责任人</div>
+                      <div className="text-slate-300">王强 (工程部)</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500 mb-1">限期完成时间</div>
+                      <div className="text-red-400 font-medium">2026-03-15</div>
+                    </div>
+                  </div>
+                  <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                    <div className="text-sm font-medium text-white mb-3">提交整改结果</div>
+                    <textarea className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 focus:outline-none focus:border-blue-500 mb-3" rows={3} placeholder="详细描述整改过程和结果..."></textarea>
+                    <div className="flex items-center gap-4">
+                      <button className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-sm text-white transition-colors flex items-center gap-2">
+                        <Upload size={16}/> 上传整改后照片
+                      </button>
+                      <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-sm text-white transition-colors ml-auto">
+                        提交复查
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'material-request':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-white">应急物资调配申请</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 overflow-auto">
+              <div className="max-w-3xl mx-auto bg-slate-900 rounded-xl border border-slate-700 p-8 shadow-xl">
+                <h3 className="text-lg font-medium text-white mb-6 border-b border-slate-800 pb-4">填写物资调配单</h3>
+                <form className="space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm text-slate-400 mb-2">申请单位/部门</label>
+                      <input type="text" value="隆化顺达矿业 - 应急指挥部" disabled className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-slate-300 cursor-not-allowed" />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-400 mb-2">申请日期</label>
+                      <input type="text" value="2026-03-10" disabled className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-slate-300 cursor-not-allowed" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">调配事由</label>
+                    <select className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-slate-300 focus:outline-none focus:border-blue-500">
+                      <option>日常物资补充</option>
+                      <option>防汛应急演练</option>
+                      <option>突发事件应急抢险</option>
+                      <option>其他</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">需求物资清单</label>
+                    <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+                      <table className="w-full text-left">
+                        <thead className="bg-slate-900/50 border-b border-slate-700">
+                          <tr>
+                            <th className="p-3 text-sm font-medium text-slate-400">物资名称</th>
+                            <th className="p-3 text-sm font-medium text-slate-400">规格型号</th>
+                            <th className="p-3 text-sm font-medium text-slate-400">申请数量</th>
+                            <th className="p-3 text-sm font-medium text-slate-400">操作</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                          <tr>
+                            <td className="p-3"><input type="text" defaultValue="应急照明灯" className="w-full bg-transparent border-b border-slate-600 focus:border-blue-500 text-slate-200 text-sm p-1 outline-none" /></td>
+                            <td className="p-3"><input type="text" defaultValue="1000W 移动式" className="w-full bg-transparent border-b border-slate-600 focus:border-blue-500 text-slate-200 text-sm p-1 outline-none" /></td>
+                            <td className="p-3"><input type="number" defaultValue={10} className="w-full bg-transparent border-b border-slate-600 focus:border-blue-500 text-slate-200 text-sm p-1 outline-none" /></td>
+                            <td className="p-3"><button type="button" className="text-red-400 hover:text-red-300 text-sm"><X size={16}/></button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button type="button" className="w-full p-3 text-sm text-blue-400 hover:bg-slate-700/50 transition-colors flex justify-center items-center gap-2">
+                        + 添加物资项
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">备注说明</label>
+                    <textarea className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 focus:outline-none focus:border-blue-500" rows={3} placeholder="请输入补充说明..."></textarea>
+                  </div>
+                  <div className="pt-4 border-t border-slate-800 flex justify-end gap-4">
+                    <button type="button" onClick={() => setActiveSubPage(null)} className="px-6 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors">取消</button>
+                    <button type="button" className="bg-blue-600 hover:bg-blue-700 px-8 py-2 rounded-lg text-white font-medium transition-colors">提交申请</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        );
+      case 'emergency-report':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-red-400 flex items-center gap-2"><AlertTriangle /> 突发环境事件一键上报</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 overflow-auto">
+              <div className="max-w-3xl mx-auto bg-slate-900 rounded-xl border border-red-500/30 p-8 shadow-2xl shadow-red-500/10 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-orange-500 to-red-600"></div>
+                
+                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-8 flex gap-4 items-start">
+                  <ShieldAlert className="text-red-400 shrink-0 mt-1" size={24} />
+                  <div>
+                    <h4 className="text-red-400 font-bold mb-1">紧急提报说明</h4>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      此表单将直接上报至<span className="text-white font-bold">县级生态环境部门</span>及<span className="text-white font-bold">应急管理部门</span>指挥中心。请如实、准确、快速填写核心信息。提交后系统将自动启动应急预案响应流程。
+                    </p>
+                  </div>
+                </div>
+
+                <form className="space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm text-slate-400 mb-2">事件类型 <span className="text-red-500">*</span></label>
+                      <select className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500">
+                        <option>尾矿水泄漏/超标排放</option>
+                        <option>坝体滑坡/溃坝征兆</option>
+                        <option>扬尘严重污染</option>
+                        <option>非法倾倒</option>
+                        <option>其他突发环境事件</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-400 mb-2">发生时间 <span className="text-red-500">*</span></label>
+                      <input type="datetime-local" className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500" />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">事件发生地点 <span className="text-red-500">*</span></label>
+                    <div className="flex gap-2">
+                      <input type="text" placeholder="详细位置描述 (如: 东侧坝肩、2号排洪口)" className="flex-1 bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-red-500" />
+                      <button type="button" className="bg-slate-700 hover:bg-slate-600 px-4 rounded-lg text-slate-300 transition-colors flex items-center gap-2">
+                        <Map size={16}/> 获取定位
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">事件简述及初步影响 <span className="text-red-500">*</span></label>
+                    <textarea className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-red-500" rows={4} placeholder="请描述事件经过、目前的污染范围、是否有人员伤亡或财产损失..."></textarea>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">已采取的先期处置措施</label>
+                    <textarea className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-red-500" rows={2} placeholder="如：已关闭排洪阀门、已组织人员撤离..."></textarea>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-slate-400 mb-2">现场影像资料 (可选)</label>
+                    <div className="border-2 border-dashed border-slate-700 rounded-lg p-6 text-center hover:bg-slate-800/50 transition-colors cursor-pointer">
+                      <Upload className="mx-auto mb-2 text-slate-500" size={24} />
+                      <div className="text-sm text-slate-400">点击或拖拽上传现场照片/视频</div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-slate-800 flex justify-end gap-4">
+                    <button type="button" onClick={() => setActiveSubPage(null)} className="px-6 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors">取消</button>
+                    <button type="button" className="bg-red-600 hover:bg-red-700 px-8 py-3 rounded-lg text-white font-bold text-lg transition-colors shadow-lg shadow-red-600/20 flex items-center gap-2">
+                      <AlertTriangle size={20} /> 确认上报
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        );
+      case 'remote-sensing':
+        return (
+          <div className="h-full flex flex-col animate-in slide-in-from-right-8 duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <button onClick={() => setActiveSubPage(null)} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-xl font-bold text-white">多时相遥感对比分析</h2>
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 flex flex-col">
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex gap-4">
+                  <select className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                    <option>2025年10月 (基准期)</option>
+                    <option>2025年06月</option>
+                  </select>
+                  <span className="text-slate-500 flex items-center">VS</span>
+                  <select className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                    <option>2026年03月 (当前期)</option>
+                    <option>2026年01月</option>
+                  </select>
+                </div>
+                <div className="flex gap-2">
+                  <button className="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-sm text-white transition-colors">生成变化图斑</button>
+                  <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm text-white transition-colors">导出分析报告</button>
+                </div>
+              </div>
+              <div className="flex-1 relative rounded-lg overflow-hidden border border-slate-700 flex">
+                <div className="w-1/2 relative border-r-2 border-blue-500">
+                  <img src="https://images.unsplash.com/photo-1584972208173-0f1170f18d6e?q=80&w=800&auto=format&fit=crop" alt="2025" className="w-full h-full object-cover opacity-60 hue-rotate-30" />
+                  <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded backdrop-blur-sm font-mono text-sm">2025-10-15</div>
+                </div>
+                <div className="w-1/2 relative">
+                  <img src="https://images.unsplash.com/photo-1584972208173-0f1170f18d6e?q=80&w=800&auto=format&fit=crop" alt="2026" className="w-full h-full object-cover opacity-80" />
+                  <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded backdrop-blur-sm font-mono text-sm">2026-03-10</div>
+                  
+                  {/* Simulated Change Detection Highlight */}
+                  <div className="absolute top-1/3 left-1/4 w-32 h-24 border-2 border-red-500 bg-red-500/20 rounded-lg animate-pulse">
+                    <div className="absolute -top-6 left-0 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded whitespace-nowrap">新增裸露区域 (0.5ha)</div>
+                  </div>
+                </div>
+                {/* Slider Handle */}
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-blue-500 cursor-ew-resize flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                  <div className="w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center">
+                    <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="h-full flex flex-col bg-slate-900">
@@ -44,17 +358,21 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-700 px-6 flex-shrink-0">
+      <div className="flex border-b border-slate-700 px-6 flex-shrink-0 overflow-x-auto custom-scrollbar">
         <Tab active={activeTab === 'progress'} onClick={() => setActiveTab('progress')} icon={<Clock size={16} />} label="进度跟踪" />
         <Tab active={activeTab === 'docs'} onClick={() => setActiveTab('docs')} icon={<FileText size={16} />} label="文档管理" />
-        <Tab active={activeTab === 'monitoring'} onClick={() => setActiveTab('monitoring')} icon={<Activity size={16} />} label="监测数据" />
-        <Tab active={activeTab === 'hazards'} onClick={() => setActiveTab('hazards')} icon={<AlertTriangle size={16} />} label="隐患治理" />
-        <Tab active={activeTab === 'budget'} onClick={() => setActiveTab('budget')} icon={<DollarSign size={16} />} label="预算计划与管理" />
+        <Tab active={activeTab === 'monitoring'} onClick={() => setActiveTab('monitoring')} icon={<Activity size={16} />} label="综合监测" />
+        <Tab active={activeTab === 'hazards'} onClick={() => setActiveTab('hazards')} icon={<AlertTriangle size={16} />} label="隐患与风险" />
+        <Tab active={activeTab === 'emergency'} onClick={() => setActiveTab('emergency')} icon={<ShieldAlert size={16} />} label="应急管理" />
+        <Tab active={activeTab === 'integration'} onClick={() => setActiveTab('integration')} icon={<Share2 size={16} />} label="数据协同与合规" />
+        <Tab active={activeTab === 'budget'} onClick={() => setActiveTab('budget')} icon={<DollarSign size={16} />} label="预算管理" />
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-6 relative">
-        {activeTab === 'progress' && (
+        {activeSubPage ? renderSubPage() : (
+          <>
+            {activeTab === 'progress' && (
           <div className="space-y-6 max-w-4xl">
             <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
               <h3 className="text-lg font-medium text-white mb-6">项目里程碑</h3>
@@ -108,90 +426,283 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
 
         {activeTab === 'monitoring' && (
           <div className="space-y-6 max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-                <div className="text-sm text-slate-400 mb-1">表面位移 (最大值)</div>
-                <div className="text-2xl font-bold text-red-400 font-mono">25.6 <span className="text-sm text-slate-500">mm</span></div>
-                <div className="text-xs text-red-400 mt-2">↑ 较昨日上涨 2.1mm</div>
-              </div>
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-                <div className="text-sm text-slate-400 mb-1">浸润线埋深 (平均)</div>
-                <div className="text-2xl font-bold text-orange-400 font-mono">15.2 <span className="text-sm text-slate-500">m</span></div>
-                <div className="text-xs text-orange-400 mt-2">↑ 较昨日上涨 0.5m</div>
-              </div>
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
-                <div className="text-sm text-slate-400 mb-1">干滩长度</div>
-                <div className="text-2xl font-bold text-emerald-400 font-mono">125.0 <span className="text-sm text-slate-500">m</span></div>
-                <div className="text-xs text-emerald-400 mt-2">达标 (要求≥100m)</div>
+            {/* 预警横幅 */}
+            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
+              <AlertCircle className="text-red-400 mt-0.5" size={18} />
+              <div>
+                <div className="text-red-400 font-medium text-sm">超标预警 (2)</div>
+                <div className="text-slate-300 text-xs mt-1">1. 下游监测井 GW-02 氰化物浓度超标 (0.06mg/L, 限值0.05)</div>
+                <div className="text-slate-300 text-xs mt-0.5">2. AI识别: 尾矿运输车辆遗撒 (排洪口区域)</div>
               </div>
             </div>
-            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 h-80">
-              <h3 className="text-lg font-medium text-white mb-4">1号监测点位移趋势</h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={mockChartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-                  <XAxis dataKey="time" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155' }} itemStyle={{ color: '#e2e8f0' }} />
-                  <Line type="monotone" dataKey="x" name="X向位移" stroke="#0066FF" strokeWidth={2} />
-                  <Line type="monotone" dataKey="y" name="Y向位移" stroke="#10B981" strokeWidth={2} />
-                  <Line type="monotone" dataKey="z" name="Z向沉降" stroke="#F59E0B" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+                <div className="text-sm text-slate-400 mb-1 flex items-center gap-2"><Activity size={14}/> 表面位移 (最大值)</div>
+                <div className="text-2xl font-bold text-orange-400 font-mono">25.6 <span className="text-sm text-slate-500">mm</span></div>
+                <div className="text-xs text-orange-400 mt-2">↑ 较昨日上涨 2.1mm</div>
+              </div>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+                <div className="text-sm text-slate-400 mb-1 flex items-center gap-2"><Droplets size={14}/> 尾矿水排放流量</div>
+                <div className="text-2xl font-bold text-emerald-400 font-mono">125.0 <span className="text-sm text-slate-500">m³/h</span></div>
+                <div className="text-xs text-emerald-400 mt-2">水质: COD 45mg/L (达标)</div>
+              </div>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+                <div className="text-sm text-slate-400 mb-1 flex items-center gap-2"><Map size={14}/> 地下水水位 (GW-01)</div>
+                <div className="text-2xl font-bold text-emerald-400 font-mono">-15.2 <span className="text-sm text-slate-500">m</span></div>
+                <div className="text-xs text-emerald-400 mt-2">水质综合评价: 良好</div>
+              </div>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+                <div className="text-sm text-slate-400 mb-1 flex items-center gap-2"><Layers size={14}/> 周边土壤重金属</div>
+                <div className="text-2xl font-bold text-emerald-400 font-mono">正常 <span className="text-sm text-slate-500">级别</span></div>
+                <div className="text-xs text-emerald-400 mt-2">最近评估: 2026-02-15</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 h-80">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-white flex items-center gap-2"><Video size={18}/> 排放口视频与AI监控</h3>
+                  <span className="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">实时联动</span>
+                </div>
+                <div className="relative h-[calc(100%-2rem)] bg-black rounded-lg overflow-hidden border border-slate-700">
+                  <img src="https://images.unsplash.com/photo-1580901368919-7738efb0f87e?q=80&w=800&auto=format&fit=crop" alt="排放口" className="w-full h-full object-cover opacity-70" />
+                  <div className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">排放口 CAM-02</div>
+                  <div className="absolute bottom-2 right-2 bg-red-500/80 text-white text-xs px-2 py-1 rounded backdrop-blur-sm animate-pulse">AI识别: 疑似遗撒</div>
+                </div>
+              </div>
+              
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 h-80">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-white flex items-center gap-2"><Radio size={18}/> 遥感与无人机巡查</h3>
+                  <button onClick={() => setActiveSubPage('remote-sensing')} className="text-xs text-blue-400 hover:text-blue-300 transition-colors">多时相对比 &gt;</button>
+                </div>
+                <div className="relative h-[calc(100%-2rem)] bg-slate-900 rounded-lg overflow-hidden border border-slate-700 flex">
+                  <div className="w-1/2 border-r border-slate-700 relative">
+                    <img src="https://images.unsplash.com/photo-1584972208173-0f1170f18d6e?q=80&w=400&auto=format&fit=crop" alt="遥感" className="w-full h-full object-cover opacity-60 hue-rotate-15" />
+                    <div className="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded">卫星遥感 (库面变化)</div>
+                  </div>
+                  <div className="w-1/2 relative">
+                    <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=400&auto=format&fit=crop" alt="无人机" className="w-full h-full object-cover opacity-80" />
+                    <div className="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded">无人机近景 (边坡)</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
         {activeTab === 'hazards' && (
-          <div className="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden max-w-6xl">
-            <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/80">
-              <h3 className="text-lg font-medium text-white">隐患排查闭环管理</h3>
-              <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm text-white transition-colors">上报新隐患</button>
+          <div className="space-y-6 max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Map size={18}/> 风险区域建模与评估</h3>
+                <div className="space-y-4">
+                  <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-700">
+                    <div className="text-sm text-slate-200 mb-1">污染扩散模拟 (渗滤液)</div>
+                    <div className="text-xs text-slate-400">基于地下水流向，模拟未来5年渗滤液扩散范围。当前主要影响东南方向 500m 区域。</div>
+                    <button onClick={() => setActiveSubPage('diffusion-model')} className="mt-2 text-xs text-blue-400 border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors">查看 3D 扩散模型</button>
+                  </div>
+                  <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-700">
+                    <div className="text-sm text-slate-200 mb-1">土壤/地下水风险评估</div>
+                    <div className="text-xs text-slate-400">2026年度汛前全面排查评估报告已生成。周边农田土壤重金属风险可控。</div>
+                    <button onClick={() => setPreviewDoc({title: '2026年度土壤及地下水风险评估报告.pdf', type: 'pdf'})} className="mt-2 text-xs text-blue-400 border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors">下载评估报告</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><CheckCircle2 size={18}/> 汛期前全面排查 (电子化)</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-300">1. 坝体稳定性检查</span>
+                    <span className="text-emerald-400">已完成 (无异常)</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-300">2. 排洪设施畅通性</span>
+                    <span className="text-orange-400">整改中 (发现堵塞)</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-300">3. 应急物资储备核查</span>
+                    <span className="text-emerald-400">已完成 (储备充足)</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-300">4. 监测设备校准</span>
+                    <span className="text-slate-500">待执行 (计划 03-15)</span>
+                  </div>
+                  <div className="pt-3 mt-3 border-t border-slate-700">
+                    <button onClick={() => setActiveSubPage('inspection-process')} className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded text-sm text-white transition-colors">进入排查-整改-销号流程</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-800/50 border-b border-slate-700 text-sm text-slate-400">
-                  <th className="p-4 font-medium">隐患编号</th>
-                  <th className="p-4 font-medium">隐患描述</th>
-                  <th className="p-4 font-medium">发现时间</th>
-                  <th className="p-4 font-medium">当前状态</th>
-                  <th className="p-4 font-medium">责任人</th>
-                  <th className="p-4 font-medium text-right">操作</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-700/50">
-                <tr className="hover:bg-slate-800/50 transition-colors">
-                  <td className="p-4 text-sm text-slate-300 font-mono">HZ-20260301-01</td>
-                  <td className="p-4 text-sm text-slate-200">东侧坝肩发现横向裂缝，长约2m</td>
-                  <td className="p-4 text-sm text-slate-400 font-mono">2026-03-01</td>
-                  <td className="p-4">
-                    <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-1 rounded text-xs">整改中</span>
-                  </td>
-                  <td className="p-4 text-sm text-slate-300">王强</td>
-                  <td className="p-4 text-right"><button className="text-blue-400 hover:text-blue-300 text-sm">提交验收</button></td>
-                </tr>
-                <tr className="hover:bg-slate-800/50 transition-colors">
-                  <td className="p-4 text-sm text-slate-300 font-mono">HZ-20260215-02</td>
-                  <td className="p-4 text-sm text-slate-200">排水井入口有杂物堵塞</td>
-                  <td className="p-4 text-sm text-slate-400 font-mono">2026-02-15</td>
-                  <td className="p-4">
-                    <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded text-xs flex items-center gap-1 w-max ml-auto"><CheckCircle2 size={12}/> 已销号</span>
-                  </td>
-                  <td className="p-4 text-sm text-slate-300">李明</td>
-                  <td className="p-4 text-right"><button className="text-slate-400 hover:text-slate-300 text-sm">查看档案</button></td>
-                </tr>
-                <tr className="hover:bg-slate-800/50 transition-colors">
-                  <td className="p-4 text-sm text-slate-300 font-mono">HZ-20260308-01</td>
-                  <td className="p-4 text-sm text-slate-200">2号渗压计数据传输异常</td>
-                  <td className="p-4 text-sm text-slate-400 font-mono">2026-03-08</td>
-                  <td className="p-4">
-                    <span className="bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2 py-1 rounded text-xs">待评估</span>
-                  </td>
-                  <td className="p-4 text-sm text-slate-300">张工</td>
-                  <td className="p-4 text-right"><button className="text-blue-400 hover:text-blue-300 text-sm">开始评估</button></td>
-                </tr>
-              </tbody>
-            </table>
+
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden">
+              <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/80">
+                <h3 className="text-lg font-medium text-white">隐患台账</h3>
+                <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm text-white transition-colors">上报新隐患</button>
+              </div>
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-800/50 border-b border-slate-700 text-sm text-slate-400">
+                    <th className="p-4 font-medium">隐患编号</th>
+                    <th className="p-4 font-medium">隐患描述</th>
+                    <th className="p-4 font-medium">发现时间</th>
+                    <th className="p-4 font-medium">当前状态</th>
+                    <th className="p-4 font-medium">责任人</th>
+                    <th className="p-4 font-medium text-right">操作</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700/50">
+                  <tr className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-4 text-sm text-slate-300 font-mono">HZ-20260301-01</td>
+                    <td className="p-4 text-sm text-slate-200">排洪井入口有杂物堵塞</td>
+                    <td className="p-4 text-sm text-slate-400 font-mono">2026-03-01</td>
+                    <td className="p-4">
+                      <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-1 rounded text-xs">整改中</span>
+                    </td>
+                    <td className="p-4 text-sm text-slate-300">王强</td>
+                    <td className="p-4 text-right"><button className="text-blue-400 hover:text-blue-300 text-sm">提交验收</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'emergency' && (
+          <div className="space-y-6 max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><FileText size={18}/> 应急预案管理</h3>
+                <div className="space-y-3">
+                  <div className="bg-slate-900/50 p-3 rounded border border-slate-700 flex justify-between items-center">
+                    <div>
+                      <div className="text-sm text-slate-200">尾矿库溃坝应急预案</div>
+                      <div className="text-xs text-slate-500 mt-1">已备案 | 2025-11修订</div>
+                    </div>
+                    <button className="text-blue-400 hover:text-blue-300"><Download size={16}/></button>
+                  </div>
+                  <div className="bg-slate-900/50 p-3 rounded border border-slate-700 flex justify-between items-center">
+                    <div>
+                      <div className="text-sm text-slate-200">环境突发事件应急预案</div>
+                      <div className="text-xs text-slate-500 mt-1">已备案 | 2025-12修订</div>
+                    </div>
+                    <button className="text-blue-400 hover:text-blue-300"><Download size={16}/></button>
+                  </div>
+                  <button className="w-full mt-2 text-sm text-slate-400 border border-slate-600 border-dashed py-2 rounded hover:bg-slate-700 transition-colors">
+                    + 演练计划与记录
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Box size={18}/> 应急物资台账</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center text-sm border-b border-slate-700 pb-2">
+                    <span className="text-slate-300">防汛编织袋</span>
+                    <span className="text-emerald-400 font-mono">5000 条</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-b border-slate-700 pb-2">
+                    <span className="text-slate-300">挖掘机/装载机</span>
+                    <span className="text-emerald-400 font-mono">3 台</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-b border-slate-700 pb-2">
+                    <span className="text-slate-300">应急照明灯</span>
+                    <span className="text-orange-400 font-mono">10 套 (需补充)</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-b border-slate-700 pb-2">
+                    <span className="text-slate-300">中和药剂(石灰)</span>
+                    <span className="text-emerald-400 font-mono">10 吨</span>
+                  </div>
+                  <button onClick={() => setActiveSubPage('material-request')} className="w-full mt-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">物资调配申请 &gt;</button>
+                </div>
+              </div>
+
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 border-l-4 border-l-red-500">
+                <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><ShieldAlert size={18} className="text-red-400"/> 突发事件响应</h3>
+                <p className="text-sm text-slate-400 mb-4">
+                  发生突发环境事件时，通过此模块启动应急响应，并自动向县级生态环境部门、应急管理部门推送报告。
+                </p>
+                <button onClick={() => setActiveSubPage('emergency-report')} className="w-full bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500 hover:text-white py-3 rounded-lg font-medium transition-colors flex justify-center items-center gap-2">
+                  <AlertTriangle size={18} /> 一键上报突发事件
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'integration' && (
+          <div className="space-y-6 max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Share2 size={18}/> 数据共享与协同</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-slate-900/50 rounded border border-slate-700">
+                    <div>
+                      <div className="text-sm text-slate-200">全国固体废物污染环境防治信息平台</div>
+                      <div className="text-xs text-slate-500">标准接口对接状态</div>
+                    </div>
+                    <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs">已连接</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-slate-900/50 rounded border border-slate-700">
+                    <div>
+                      <div className="text-sm text-slate-200">部-省-市生态环境部门数据交换</div>
+                      <div className="text-xs text-slate-500">实时同步监测与预警数据</div>
+                    </div>
+                    <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs">同步中</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-slate-900/50 rounded border border-slate-700">
+                    <div>
+                      <div className="text-sm text-slate-200">跨部门协同 (应急管理、自然资源)</div>
+                      <div className="text-xs text-slate-500">共享隐患排查与地质灾害数据</div>
+                    </div>
+                    <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs">已连接</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-slate-900/50 rounded border border-slate-700">
+                    <div>
+                      <div className="text-sm text-slate-200">企业端数据汇集 (产废与运营单位)</div>
+                      <div className="text-xs text-slate-500">台账与日常巡查数据协同</div>
+                    </div>
+                    <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs">正常</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                  <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Map size={18}/> 选址合规性校验</h3>
+                  <div className="flex gap-4 mb-4">
+                    <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded border border-red-500/30">生态保护红线</span>
+                    <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded border border-yellow-500/30">永久基本农田</span>
+                    <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded border border-blue-500/30">行洪区</span>
+                  </div>
+                  <div className="text-sm text-slate-300">
+                    经GIS图层叠加分析，该尾矿库边界距离最近的生态保护红线 2.5km，未占用永久基本农田及行洪区，<span className="text-emerald-400 font-bold">选址合规</span>。
+                  </div>
+                </div>
+
+                <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                  <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Database size={18}/> 数据存储合规性</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-300">监测记录保存期限</span>
+                      <span className="text-emerald-400">已保障 (≥5年)</span>
+                    </div>
+                    <div className="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full w-full"></div>
+                    </div>
+                    <div className="flex justify-between items-center text-sm mt-4">
+                      <span className="text-slate-300">视频监控记录保存期限</span>
+                      <span className="text-emerald-400">已保障 (≥3个月)</span>
+                    </div>
+                    <div className="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full w-full"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
         {activeTab === 'budget' && (
@@ -328,6 +839,8 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
               </table>
             </div>
           </div>
+        )}
+          </>
         )}
       </div>
 

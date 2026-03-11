@@ -5,12 +5,12 @@ export default function VideoSurveillance() {
   const [activeTab, setActiveTab] = useState<'grid' | 'ai'>('grid');
 
   const cameras = [
-    { id: 'CAM-01', name: '隆化顺达-坝顶全景', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/A%20panoramic%20view%20of%20a%20large%20hydroelectric%20dam%20top%20industrial?width=800&height=600&nologo=true' },
-    { id: 'CAM-02', name: '隆化顺达-排洪口', status: 'online', ai: true, alert: true, alertType: '越界进入危险区', image: 'https://image.pollinations.ai/prompt/Industrial%20flood%20discharge%20outlet%20with%20water%20flowing?width=800&height=600&nologo=true' },
-    { id: 'CAM-03', name: '金鑫矿业-采选作业面', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/Mining%20site%20with%20excavators%20and%20heavy%20machinery?width=800&height=600&nologo=true' },
-    { id: 'CAM-04', name: '金鑫矿业-干滩区域', status: 'offline', ai: false, alert: false, image: 'https://image.pollinations.ai/prompt/Dry%20sand%20beach%20area%20at%20a%20mining%20tailings%20dam?width=800&height=600&nologo=true' },
-    { id: 'CAM-05', name: '双滦区-资源化分选厂', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/Industrial%20resource%20sorting%20factory%20interior?width=800&height=600&nologo=true' },
-    { id: 'CAM-06', name: '双滦区-皮带运输线', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/Industrial%20conveyor%20belt%20transporting%20coal%20or%20minerals?width=800&height=600&nologo=true' },
+    { id: 'CAM-01', name: '隆化顺达-坝顶全景', status: 'online', ai: true, alert: false, image: 'https://images.unsplash.com/photo-1545464333-9cbd1f263054?q=80&w=800&auto=format&fit=crop' },
+    { id: 'CAM-02', name: '隆化顺达-排洪口', status: 'online', ai: true, alert: true, alertType: '越界进入危险区', image: 'https://images.unsplash.com/photo-1580901368919-7738efb0f87e?q=80&w=800&auto=format&fit=crop' },
+    { id: 'CAM-03', name: '金鑫矿业-采选作业面', status: 'online', ai: true, alert: false, image: 'https://images.unsplash.com/photo-1578509376176-793540600645?q=80&w=800&auto=format&fit=crop' },
+    { id: 'CAM-04', name: '金鑫矿业-干滩区域', status: 'offline', ai: false, alert: false, image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop' },
+    { id: 'CAM-05', name: '双滦区-资源化分选厂', status: 'online', ai: true, alert: false, image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop' },
+    { id: 'CAM-06', name: '双滦区-皮带运输线', status: 'online', ai: true, alert: false, image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop' },
   ];
 
   const aiEvents = [

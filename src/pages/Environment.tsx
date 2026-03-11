@@ -248,12 +248,34 @@ export default function Environment() {
               </div>
               <div className="flex-1 relative rounded-xl overflow-hidden border border-slate-700 group">
                 <img 
-                  src="https://image.pollinations.ai/prompt/Satellite%20remote%20sensing%20GIS%20map%20of%20a%20mining%20area%20with%20ecological%20restoration%20and%20green%20vegetation%20cover%20top%20down%20view?width=1200&height=800&nologo=true" 
+                  src="https://images.unsplash.com/photo-1584972208173-0f1170f18d6e?q=80&w=1200&auto=format&fit=crop" 
                   alt="承德市矿区遥感GIS图" 
-                  className="w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105 hue-rotate-15 saturate-150"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                
+                {/* GIS Grid Overlay */}
+                <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 pointer-events-none">
+                  {Array.from({ length: 24 }).map((_, i) => (
+                    <div key={i} className="border-[0.5px] border-emerald-500/10"></div>
+                  ))}
+                </div>
+
+                {/* Crosshair */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 pointer-events-none opacity-70">
+                  <div className="absolute top-1/2 left-0 w-full h-[1px] bg-emerald-400"></div>
+                  <div className="absolute top-0 left-1/2 w-[1px] h-full bg-emerald-400"></div>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 border border-emerald-400 rounded-full"></div>
+                </div>
+
+                {/* Coordinates */}
+                <div className="absolute top-4 left-4 font-mono text-[10px] text-emerald-400 bg-slate-900/80 px-2 py-1.5 rounded border border-emerald-500/30 backdrop-blur-sm">
+                  <div className="flex justify-between gap-4"><span>LAT:</span><span>41°02'15.4"N</span></div>
+                  <div className="flex justify-between gap-4"><span>LON:</span><span>117°56'42.8"E</span></div>
+                  <div className="flex justify-between gap-4"><span>ELEV:</span><span>845.2m</span></div>
+                  <div className="flex justify-between gap-4"><span>CRS:</span><span>WGS 84</span></div>
+                </div>
                 
                 {/* Simulated NDVI Overlay */}
                 <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-slate-700 p-3 rounded-lg">
