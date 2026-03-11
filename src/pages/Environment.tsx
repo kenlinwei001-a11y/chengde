@@ -21,6 +21,14 @@ const waterQualityData = [
   { month: '6月', ph: 7.2, cod: 16, nh3: 0.5, heavyMetal: 0.02 },
 ];
 
+const soilData = [
+  { name: '尾矿库周边', pb: 35.2, cd: 0.15, as: 12.4, hg: 0.02 },
+  { name: '排土场下风向', pb: 42.8, cd: 0.22, as: 15.6, hg: 0.05 },
+  { name: '复绿区核心', pb: 18.5, cd: 0.08, as: 8.2, hg: 0.01 },
+  { name: '农田对照区', pb: 12.4, cd: 0.05, as: 5.1, hg: 0.01 },
+  { name: '地下水汇集', pb: 28.6, cd: 0.18, as: 14.2, hg: 0.03 },
+];
+
 export default function Environment() {
   const [activeTab, setActiveTab] = useState<'air' | 'water' | 'soil' | 'ecology'>('air');
 
@@ -240,8 +248,8 @@ export default function Environment() {
               </div>
               <div className="flex-1 relative rounded-xl overflow-hidden border border-slate-700 group">
                 <img 
-                  src="https://picsum.photos/seed/forest_satellite/1200/600" 
-                  alt="Satellite View" 
+                  src="https://image.pollinations.ai/prompt/Satellite%20remote%20sensing%20GIS%20map%20of%20a%20mining%20area%20with%20ecological%20restoration%20and%20green%20vegetation%20cover%20top%20down%20view?width=1200&height=800&nologo=true" 
+                  alt="承德市矿区遥感GIS图" 
                   className="w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
@@ -282,11 +290,44 @@ export default function Environment() {
           )}
 
           {activeTab === 'soil' && (
-            <div className="flex flex-col h-full items-center justify-center text-slate-400">
-              <Map size={48} className="mb-4 opacity-50" />
-              <p>土壤重金属三维分布热力图加载中...</p>
-              <p className="text-sm mt-2">对接自然资源局地质勘探数据</p>
-            </div>
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-lg font-bold text-white">矿区周边土壤重金属含量监测</h2>
+                <div className="flex gap-2">
+                  <span className="flex items-center gap-1 text-xs text-slate-400"><div className="w-3 h-3 bg-red-500 rounded-sm"></div> 铅(Pb)</span>
+                  <span className="flex items-center gap-1 text-xs text-slate-400"><div className="w-3 h-3 bg-emerald-500 rounded-sm"></div> 砷(As)</span>
+                  <span className="flex items-center gap-1 text-xs text-slate-400"><div className="w-3 h-3 bg-yellow-500 rounded-sm"></div> 镉(Cd)</span>
+                </div>
+              </div>
+              <div className="flex-1 min-h-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={soilData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                    <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f8fafc' }} cursor={{ fill: '#334155', opacity: 0.4 }} />
+                    <Legend wrapperStyle={{ fontSize: '12px', color: '#94a3b8' }} />
+                    <Bar dataKey="pb" name="铅(Pb) mg/kg" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="as" name="砷(As) mg/kg" fill="#10b981" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="cd" name="镉(Cd) mg/kg" fill="#eab308" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                  <h4 className="text-slate-300 font-medium mb-2 flex items-center gap-2"><Map size={16} className="text-blue-400" /> 空间分布特征</h4>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    重金属污染主要集中在排土场下风向及尾矿库周边，呈现明显的距离衰减效应。复绿区经过土壤改良，重金属有效态含量显著降低，已接近农田对照区水平。
+                  </p>
+                </div>
+                <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                  <h4 className="text-slate-300 font-medium mb-2 flex items-center gap-2"><AlertTriangle size={16} className="text-orange-400" /> 风险评估与建议</h4>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    当前各采样点重金属总量均未超过《土壤环境质量 农用地污染风险管控标准》筛选值。建议继续保持排土场防风抑尘措施，并定期监测地下水汇集区的镉、砷指标。
+                  </p>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

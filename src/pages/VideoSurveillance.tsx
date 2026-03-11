@@ -5,12 +5,12 @@ export default function VideoSurveillance() {
   const [activeTab, setActiveTab] = useState<'grid' | 'ai'>('grid');
 
   const cameras = [
-    { id: 'CAM-01', name: '隆化顺达-坝顶全景', status: 'online', ai: true, alert: false, seed: 'mountain_dam_nature' },
-    { id: 'CAM-02', name: '隆化顺达-排洪口', status: 'online', ai: true, alert: true, alertType: '越界进入危险区', seed: 'water_drainage_pipe' },
-    { id: 'CAM-03', name: '金鑫矿业-采选作业面', status: 'online', ai: true, alert: false, seed: 'mining_excavator_dirt' },
-    { id: 'CAM-04', name: '金鑫矿业-干滩区域', status: 'offline', ai: false, alert: false, seed: 'dry_beach_sand' },
-    { id: 'CAM-05', name: '双滦区-资源化分选厂', status: 'online', ai: true, alert: false, seed: 'industrial_factory_plant' },
-    { id: 'CAM-06', name: '双滦区-皮带运输线', status: 'online', ai: true, alert: false, seed: 'conveyor_belt_coal' },
+    { id: 'CAM-01', name: '隆化顺达-坝顶全景', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/A%20panoramic%20view%20of%20a%20large%20hydroelectric%20dam%20top%20industrial?width=800&height=600&nologo=true' },
+    { id: 'CAM-02', name: '隆化顺达-排洪口', status: 'online', ai: true, alert: true, alertType: '越界进入危险区', image: 'https://image.pollinations.ai/prompt/Industrial%20flood%20discharge%20outlet%20with%20water%20flowing?width=800&height=600&nologo=true' },
+    { id: 'CAM-03', name: '金鑫矿业-采选作业面', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/Mining%20site%20with%20excavators%20and%20heavy%20machinery?width=800&height=600&nologo=true' },
+    { id: 'CAM-04', name: '金鑫矿业-干滩区域', status: 'offline', ai: false, alert: false, image: 'https://image.pollinations.ai/prompt/Dry%20sand%20beach%20area%20at%20a%20mining%20tailings%20dam?width=800&height=600&nologo=true' },
+    { id: 'CAM-05', name: '双滦区-资源化分选厂', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/Industrial%20resource%20sorting%20factory%20interior?width=800&height=600&nologo=true' },
+    { id: 'CAM-06', name: '双滦区-皮带运输线', status: 'online', ai: true, alert: false, image: 'https://image.pollinations.ai/prompt/Industrial%20conveyor%20belt%20transporting%20coal%20or%20minerals?width=800&height=600&nologo=true' },
   ];
 
   const aiEvents = [
@@ -134,7 +134,7 @@ export default function VideoSurveillance() {
                 {/* Simulated Video Feed */}
                 {cam.status === 'online' ? (
                   <img 
-                    src={`https://picsum.photos/seed/${cam.seed}/800/600`} 
+                    src={cam.image} 
                     alt={cam.name} 
                     className="w-full h-full object-cover opacity-80"
                     referrerPolicy="no-referrer"

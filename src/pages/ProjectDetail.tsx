@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, FileText, Activity, AlertTriangle, Clock, Upload, Download, X, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, FileText, Activity, AlertTriangle, Clock, Upload, Download, X, CheckCircle2, DollarSign, TrendingUp, TrendingDown, PieChart } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const mockChartData = Array.from({ length: 10 }).map((_, i) => ({
@@ -49,6 +49,7 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
         <Tab active={activeTab === 'docs'} onClick={() => setActiveTab('docs')} icon={<FileText size={16} />} label="文档管理" />
         <Tab active={activeTab === 'monitoring'} onClick={() => setActiveTab('monitoring')} icon={<Activity size={16} />} label="监测数据" />
         <Tab active={activeTab === 'hazards'} onClick={() => setActiveTab('hazards')} icon={<AlertTriangle size={16} />} label="隐患治理" />
+        <Tab active={activeTab === 'budget'} onClick={() => setActiveTab('budget')} icon={<DollarSign size={16} />} label="预算计划与管理" />
       </div>
 
       {/* Content */}
@@ -191,6 +192,141 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
                 </tr>
               </tbody>
             </table>
+          </div>
+        )}
+        {activeTab === 'budget' && (
+          <div className="space-y-6 max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+                <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                  <DollarSign size={16} className="text-blue-400" />
+                  项目总预算
+                </div>
+                <div className="text-3xl font-bold text-white font-mono">1,250<span className="text-sm text-slate-500 ml-1">万元</span></div>
+                <div className="text-xs text-slate-500 mt-2">包含设计、施工、监理等全过程费用</div>
+              </div>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+                <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                  <TrendingUp size={16} className="text-emerald-400" />
+                  已拨付资金
+                </div>
+                <div className="text-3xl font-bold text-emerald-400 font-mono">450<span className="text-sm text-emerald-500/50 ml-1">万元</span></div>
+                <div className="text-xs text-emerald-400 mt-2">拨付进度: 36.0%</div>
+              </div>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+                <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                  <TrendingDown size={16} className="text-orange-400" />
+                  已执行(支出)
+                </div>
+                <div className="text-3xl font-bold text-orange-400 font-mono">380<span className="text-sm text-orange-500/50 ml-1">万元</span></div>
+                <div className="text-xs text-orange-400 mt-2">执行率: 30.4%</div>
+              </div>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+                <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                  <PieChart size={16} className="text-purple-400" />
+                  预算结余
+                </div>
+                <div className="text-3xl font-bold text-purple-400 font-mono">870<span className="text-sm text-purple-500/50 ml-1">万元</span></div>
+                <div className="text-xs text-purple-400 mt-2">剩余可用资金</div>
+              </div>
+            </div>
+
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden">
+              <div className="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-800/80">
+                <h3 className="text-lg font-medium text-white">预算执行明细</h3>
+                <div className="flex gap-2">
+                  <button className="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-sm text-white transition-colors">导出明细</button>
+                  <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm text-white transition-colors">新增支出记录</button>
+                </div>
+              </div>
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-800/50 border-b border-slate-700 text-sm text-slate-400">
+                    <th className="p-4 font-medium">支出项名称</th>
+                    <th className="p-4 font-medium">分类</th>
+                    <th className="p-4 font-medium">计划预算</th>
+                    <th className="p-4 font-medium">实际支出</th>
+                    <th className="p-4 font-medium">执行率</th>
+                    <th className="p-4 font-medium">状态</th>
+                    <th className="p-4 font-medium text-right">操作</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700/50">
+                  <tr className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-4 text-sm text-slate-200">前期勘察设计费</td>
+                    <td className="p-4 text-sm text-slate-400">服务费</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">150 万元</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">145 万元</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2 w-24">
+                        <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                          <div className="h-full bg-emerald-500 rounded-full" style={{ width: '96.6%' }}></div>
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">96.6%</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded text-xs">已结项</span>
+                    </td>
+                    <td className="p-4 text-right"><button className="text-blue-400 hover:text-blue-300 text-sm">查看凭证</button></td>
+                  </tr>
+                  <tr className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-4 text-sm text-slate-200">排洪系统改造工程</td>
+                    <td className="p-4 text-sm text-slate-400">工程款</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">480 万元</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">120 万元</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2 w-24">
+                        <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                          <div className="h-full bg-blue-500 rounded-full" style={{ width: '25%' }}></div>
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">25.0%</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-1 rounded text-xs">执行中</span>
+                    </td>
+                    <td className="p-4 text-right"><button className="text-blue-400 hover:text-blue-300 text-sm">查看凭证</button></td>
+                  </tr>
+                  <tr className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-4 text-sm text-slate-200">在线监测设备采购</td>
+                    <td className="p-4 text-sm text-slate-400">设备费</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">220 万元</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">115 万元</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2 w-24">
+                        <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                          <div className="h-full bg-blue-500 rounded-full" style={{ width: '52.2%' }}></div>
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">52.2%</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-1 rounded text-xs">执行中</span>
+                    </td>
+                    <td className="p-4 text-right"><button className="text-blue-400 hover:text-blue-300 text-sm">查看凭证</button></td>
+                  </tr>
+                  <tr className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-4 text-sm text-slate-200">坝体加固工程</td>
+                    <td className="p-4 text-sm text-slate-400">工程款</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">350 万元</td>
+                    <td className="p-4 text-sm text-slate-300 font-mono">0 万元</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2 w-24">
+                        <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                          <div className="h-full bg-slate-500 rounded-full" style={{ width: '0%' }}></div>
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">0.0%</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="bg-slate-700 text-slate-300 border border-slate-600 px-2 py-1 rounded text-xs">未开始</span>
+                    </td>
+                    <td className="p-4 text-right"><button className="text-slate-400 hover:text-slate-300 text-sm">查看凭证</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
